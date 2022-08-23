@@ -1,3 +1,4 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,7 @@ class _ShowUploadState extends State<ShowUpload> {
           if (!snapshot.hasData) {
             return (const Center(child: Text("No Images Found")));
           } else {
-            return ListView.builder(
+            return Swiper(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (BuildContext context, int index) {
                 String url = snapshot.data!.docs[index]['downloadURL'];
@@ -34,6 +35,8 @@ class _ShowUploadState extends State<ShowUpload> {
                   fit: BoxFit.fitWidth,
                 );
               },
+              itemWidth: 300.0,
+              layout: SwiperLayout.STACK,
             );
           }
         },

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mysecond_app/Screens/registeration_screen.dart';
 import 'package:mysecond_app/Screens/home_screen.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -83,25 +84,30 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     // button
-    final loginButton = loading
-        ? const CircularProgressIndicator()
-        : Material(
-            elevation: 5,
-            borderRadius: BorderRadius.circular(10),
-            color: const Color.fromARGB(255, 0, 116, 116),
-            child: MaterialButton(
-                padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                minWidth: MediaQuery.of(context).size.width,
-                onPressed: () {
-                  setState(() {
-                    loading = true;
-                  });
-                  signIn(emailController.text, passwordController.text);
-                  setState(() {
-                    loading = false;
-                  });
-                },
-                child: const Text(
+    final loginButton = Material(
+      elevation: 5,
+      borderRadius: BorderRadius.circular(10),
+      color: const Color.fromARGB(255, 0, 116, 116),
+      child: MaterialButton(
+          padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+          minWidth: MediaQuery.of(context).size.width,
+          onPressed: () async {
+            setState(() => loading = true);
+            signIn(emailController.text, passwordController.text);
+            setState(() {
+              loading = false;
+            });
+          },
+          child: loading
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    CircularProgressIndicator(color: Colors.white),
+                    SizedBox(width: 24),
+                    Text('Please Wait'),
+                  ],
+                )
+              : const Text(
                   "Login",
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -109,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                 )),
-          );
+    );
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
